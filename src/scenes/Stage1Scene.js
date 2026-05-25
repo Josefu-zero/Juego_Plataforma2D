@@ -29,10 +29,11 @@ export default class Stage1Scene extends Phaser.Scene {
     this.registry.set('showBossBar',  false);
     this.registry.set('hasKey',       false);  // mecánica de llave
 
-    this.gameState    = 'playing';
-    this.checkpointX  = 80;
-    this._mobileState = {};
-    this._prevMobile  = {};
+    this.gameState      = 'playing';
+    this.checkpointX    = 80;
+    this._mobileState   = {};
+    this._prevMobile    = {};
+    this._doorMsgCD     = false;
 
     // Estado de llave/puerta
     this.playerHasKey = false;
@@ -303,13 +304,16 @@ export default class Stage1Scene extends Phaser.Scene {
   // ─── Abrir puerta ───────────────────────────────────────
   _tryOpenDoor() {
     if (this.doorOpen || !this.playerHasKey) {
-      if (!this.playerHasKey) {
+      if (!this.playerHasKey && !this._doorMsgCD) {
+        this._doorMsgCD = true;
         this._showMessage('¡Necesitas la LLAVE!', '#ff4444', 1200);
+        this.time.delayedCall(1400, () => { this._doorMsgCD = false; });
       }
       return;
     }
-    this.doorOpen = true;
-    this.playerHasKey = false; // Se consume la llave
+    this.doorOpen      = true;
+    this.door.isOpen   = true;
+    this.playerHasKey  = false;
 
     // Animar apertura
     this.door.setTexture('door_open').setDisplaySize(40, 64).refreshBody();
@@ -486,8 +490,9 @@ export default class Stage1Scene extends Phaser.Scene {
     } else {
       this.time.delayedCall(700, () => {
         const P = this.player;
+        P.resetDamageState();
         P.setPosition(this.checkpointX, this.H - 120);
-        P.health      = P.maxHealth;
+        P.health = P.maxHealth;
         P.body.setVelocity(0, 0);
         this.registry.set('energy', 100);
       });

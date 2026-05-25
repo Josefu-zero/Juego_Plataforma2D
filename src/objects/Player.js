@@ -164,12 +164,14 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     if ((Phaser.Input.Keyboard.JustDown(keys.X) || Phaser.Input.Keyboard.JustDown(keys.J))
         && !this._shootCD) {
       this._fireNormal();
-      this._shootCD = true;
+      this.chargeTime = 0;
+      this._shootCD   = true;
       this.gameScene.time.delayedCall(160, () => { this._shootCD = false; });
     }
   }
 
   _fireNormal() {
+    if ((this.gameScene.registry.get('energy') || 0) < 2) return;
     const bx = this.x + this.facing * 22;
     const by = this.y - 4;
     const b  = this.bullets.get(bx, by, 'bullet');
@@ -190,6 +192,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   }
 
   _fireCharged() {
+    if ((this.gameScene.registry.get('energy') || 0) < 14) return;
     const bx = this.x + this.facing * 24;
     const by = this.y - 4;
     const b  = this.chargedBullets.get(bx, by, 'bullet_charged');

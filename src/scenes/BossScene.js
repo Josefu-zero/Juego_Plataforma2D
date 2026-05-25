@@ -298,12 +298,9 @@ export default class BossScene extends Phaser.Scene {
       // Respawn en la izquierda de la arena
       this.time.delayedCall(700, () => {
         const P = this.player;
+        P.resetDamageState();
         P.setPosition(80, this.H - 120);
-        P.health      = P.maxHealth;
-        P.isDead      = false;
-        P.isHurt      = false;
-        
-        
+        P.health = P.maxHealth;
         P.body.setVelocity(0, 0);
         this.registry.set('energy', 100);
       });

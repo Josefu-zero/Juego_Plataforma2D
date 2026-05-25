@@ -155,14 +155,27 @@ export class EnemyGround extends BaseEnemy {
 export class EnemyKeyHolder extends EnemyGround {
   constructor(scene, x, y) {
     super(scene, x, y);
-    // Sobreescribir stats: más fuerte, vale más puntos
-    this.health    = 5;
-    this.maxHealth = 5;
+    this.health     = 5;
+    this.maxHealth  = 5;
     this.scoreValue = 500;
-    this.speed = 55;
-    // Efecto visual: más grande
+    this.speed      = 55;
     this.setScale(1.25);
-    this.setTint(0xffcc00); // tinte dorado para diferenciar
+    this.setTint(0xffcc00);
+  }
+
+  takeDamage(amount = 1) {
+    if (!this.isAlive || this.isHurt) return;
+    this.health -= amount;
+    this.isHurt  = true;
+    this.setTint(0xffffff);
+    this.gameScene.cameras.main.shake(35, 0.004);
+    this.gameScene.time.delayedCall(120, () => {
+      if (!this.active) return;
+      // Restaurar tinte dorado en lugar de clearTint()
+      this.setTint(0xffcc00);
+      this.isHurt = false;
+    });
+    if (this.health <= 0) this._die();
   }
 
   _die() {
@@ -219,9 +232,10 @@ export class EnemyFlying extends BaseEnemy {
     this.hoverT += delta;
 
     switch (this.phase) {
-      case 'hover':
+      case 'hover': {
         this.body.setVelocityX(this.facing * this.speed);
-        this.y = this.baseY + Math.sin(this.hoverT * 0.002) * 22;
+        const targetY = this.baseY + Math.sin(this.hoverT * 0.002) * 22;
+        this.body.setVelocityY((targetY - this.y) * 8);
 
         if (this.x > player.x + 280) this.facing = -1;
         if (this.x < player.x - 280) this.facing =  1;
@@ -236,13 +250,14 @@ export class EnemyFlying extends BaseEnemy {
           this.body.setVelocityY(Math.sin(ang) * 310);
         }
         break;
+      }
 
       case 'dive':
         this.diveAcc = (this.diveAcc || 0) + delta;
         if (this.diveAcc > 550) { this.diveAcc = 0; this.phase = 'return'; }
         break;
 
-      case 'return':
+      case 'return': {
         const dy = this.baseY - this.y;
         this.body.setVelocityY(dy * 3.5);
         this.body.setVelocityX(this.body.velocity.x * 0.9);
@@ -251,6 +266,7 @@ export class EnemyFlying extends BaseEnemy {
           this.body.setVelocityY(0);
         }
         break;
+      }
     }
   }
 }
