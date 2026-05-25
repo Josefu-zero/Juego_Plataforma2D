@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MEGA X — Proyecto Final Aplicaciones Web</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0a0f;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+      font-family: 'Courier New', monospace;
+    }
+
+    #game-container {
+      position: relative;
+      border: 2px solid #1e90ff;
+      box-shadow: 0 0 30px rgba(30,144,255,0.4);
+    }
+
+    canvas { display: block; }
+
+    /* ── Controles táctiles mobile ── */
+    #mobile-controls {
+      display: none;
+      width: 100%;
+      max-width: 800px;
+      padding: 10px 16px;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+
+    .dpad {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .dpad-row { display: flex; gap: 3px; }
+
+    .btn-touch {
+      width: 50px; height: 50px;
+      background: rgba(30,144,255,0.2);
+      border: 2px solid rgba(30,144,255,0.6);
+      border-radius: 8px;
+      color: #1e90ff;
+      font-size: 20px;
+      display: flex; align-items: center; justify-content: center;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+
+    .btn-touch:active { background: rgba(30,144,255,0.45); transform: scale(0.92); }
+
+    .btn-spacer {
+      width: 50px; height: 50px;
+      visibility: hidden;
+    }
+
+    .action-btns {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .action-row { display: flex; gap: 6px; align-items: center; }
+
+    .btn-action {
+      width: 54px; height: 54px;
+      border-radius: 50%;
+      border: 2px solid;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
+    }
+
+    .btn-action:active { transform: scale(0.9); }
+
+    .btn-jump  { background: rgba(0,200,255,0.2);  border-color: #00c8ff; color: #00c8ff; }
+    .btn-shoot { background: rgba(255,80,80,0.2);  border-color: #ff5050; color: #ff5050; }
+    .btn-dash  { background: rgba(150,80,255,0.2); border-color: #9650ff; color: #9650ff;
+                 width: 46px; height: 46px; font-size: 15px; }
+
+    @media (max-width: 820px) {
+      #mobile-controls { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="game-container"></div>
+
+  <!-- Controles táctiles -->
+  <div id="mobile-controls">
+    <div class="dpad">
+      <div class="dpad-row">
+        <div class="btn-spacer"></div>
+        <div class="btn-touch" id="btn-up">▲</div>
+        <div class="btn-spacer"></div>
+      </div>
+      <div class="dpad-row">
+        <div class="btn-touch" id="btn-left">◀</div>
+        <div class="btn-touch" id="btn-down">▼</div>
+        <div class="btn-touch" id="btn-right">▶</div>
+      </div>
+    </div>
+
+    <div class="action-btns">
+      <div class="action-row">
+        <div class="btn-action btn-dash"  id="btn-dash">💨</div>
+        <div class="btn-action btn-jump"  id="btn-jump">▲</div>
+      </div>
+      <div class="action-row">
+        <div class="btn-action btn-shoot" id="btn-shoot">🔫</div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

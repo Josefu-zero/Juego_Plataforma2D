@@ -1,0 +1,17 @@
+{
+  "name": "megax-game",
+  "version": "1.0.0",
+  "description": "Videojuego plataforma 2D estilo Mega Man X — Proyecto Final Aplicaciones Web EPN",
+  "type": "module",
+  "scripts": {
+    "dev":     "vite",
+    "build":   "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "phaser": "^3.60.0"
+  },
+  "devDependencies": {
+    "vite": "^5.2.0"
+  }
+}
