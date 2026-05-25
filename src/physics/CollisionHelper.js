@@ -22,20 +22,27 @@ const CollisionHelper = {
     });
   },
 
-  /**
+/**
    * Balas del jugador vs un enemigo individual.
    * onHit(bullet, enemy) — callback cuando impacta.
    */
   playerBulletsVsEnemy(scene, player, enemy, onHit) {
-    scene.physics.add.overlap(player.bullets, enemy, (bullet, en) => {
+    // Ponemos (en, bullet) para que coincida con lo que envía Phaser (Sprite, Grupo)
+    scene.physics.add.overlap(enemy, player.bullets, (en, bullet) => {
       if (!bullet.active || !en.isAlive) return;
+      
       bullet.setActive(false).setVisible(false);
+      bullet.body.enable = false; // <-- Mira el "Consejo Extra" más abajo
+      
       onHit(bullet, en, 1);
     });
 
-    scene.physics.add.overlap(player.chargedBullets, enemy, (bullet, en) => {
+    scene.physics.add.overlap(enemy, player.chargedBullets, (en, bullet) => {
       if (!bullet.active || !en.isAlive) return;
+      
       bullet.setActive(false).setVisible(false);
+      bullet.body.enable = false; 
+      
       onHit(bullet, en, bullet._damage || 3);
     });
   },
