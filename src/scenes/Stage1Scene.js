@@ -398,7 +398,7 @@ export default class Stage1Scene extends Phaser.Scene {
   _setupInput() {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys    = this.input.keyboard.addKeys({
-      A:'A', D:'D', W:'W', Z:'Z', X:'X', C:'C', J:'J',
+      A:'A', D:'D', W:'W', Z:'Z', X:'X', C:'C', J:'J', K:'K',
       SHIFT: Phaser.Input.Keyboard.KeyCodes.SHIFT
     });
     this.input.keyboard.on('keydown-P',   () => this._togglePause());
@@ -438,8 +438,9 @@ export default class Stage1Scene extends Phaser.Scene {
     if (this.gameState !== 'playing') return;
 
     const ms = this._mobileState;
-    this.cursors.left.isDown  = !!ms.left;
-    this.cursors.right.isDown = !!ms.right;
+    // MODIFICACIÓN AQUÍ: Combinar teclado y móvil de forma segura
+    this.cursors.left.isDown  = this.cursors.left.isDown || !!ms.left;
+    this.cursors.right.isDown = this.cursors.right.isDown || !!ms.right;
 
     const prev = this._prevMobile;
     if (ms.jump  && !prev.jump)  this.keys.Z.isDown = true;

@@ -82,6 +82,7 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
   _jump(cursors, keys) {
     const pressed = Phaser.Input.Keyboard.JustDown(cursors.up)
       || Phaser.Input.Keyboard.JustDown(keys.Z)
+      || Phaser.Input.Keyboard.JustDown(keys.K)
       || Phaser.Input.Keyboard.JustDown(keys.W);
 
     if (this.body.blocked.down) this.jumpsLeft = 2;

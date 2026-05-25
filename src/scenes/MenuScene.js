@@ -82,8 +82,8 @@ export default class MenuScene extends Phaser.Scene {
 
     // ── Controles ─────────────────────────────────────────
     this.add.text(W/2, H*0.72, [
-      '← → : MOVER    Z/↑ : SALTAR (DOBLE)',
-      'X : DISPARAR   MANTÉN X : CARGADO',
+      '← → / AS : MOVER    Z/↑ : SALTAR (DOBLE)',
+      'X / J : DISPARAR   MANTÉN X / J : CARGADO',
       'C / SHIFT : DASH    P / ESC : PAUSA'
     ].join('\n'), {
       fontFamily: 'Courier New',
