@@ -178,6 +178,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     if (!b) return;
 
     b.setActive(true).setVisible(true).setDepth(6);
+    
+    // 👇 ESTA ES LA LÍNEA QUE REACTIVA LA FÍSICA PARA QUE VUELVA A MOVERSE
+    b.body.enable = true; 
+    
     b.body.reset(bx, by);
     b.body.setAllowGravity(false);
     b.body.setVelocityX(this.facing * 640);
@@ -199,6 +203,10 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     if (!b) return;
 
     b.setActive(true).setVisible(true).setDepth(6);
+    
+    // 👇 REACTIVAR LA FÍSICA AQUÍ TAMBIÉN
+    b.body.enable = true; 
+    
     b.body.reset(bx, by);
     b.body.setAllowGravity(false);
     b.body.setVelocityX(this.facing * 500);
