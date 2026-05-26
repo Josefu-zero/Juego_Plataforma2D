@@ -7,9 +7,11 @@ export default class Stage2Scene extends Phaser.Scene {
   constructor() { super({ key: 'Stage2Scene' }); }
 
   create() {
+    // 1. Establecer el estado inicial para que el update() funcione correctamente
+    this.gameState = 'playing'; 
+
     const W = this.scale.width;
     const H = this.scale.height;
-    this.W = W; this.H = H;
 
     // Puedes hacer que este nivel sea más corto o más largo ajustando LEVEL_W
     const LEVEL_W = W * 2.5; 
@@ -46,6 +48,9 @@ export default class Stage2Scene extends Phaser.Scene {
 
     AudioManager.playBGM('stage');
     this._showMessage('STAGE 2 — THE ABYSS', '#00ffcc', 2000);
+    // 2. Hacer que la cámara aparezca progresivamente desde el negro
+    this.cameras.main.fadeIn(600, 0, 0, 0); 
+  
   }
 
   _buildBackground(LW, H) {
@@ -125,9 +130,13 @@ export default class Stage2Scene extends Phaser.Scene {
   _setupInput() {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys    = this.input.keyboard.addKeys({
-      A:'A', D:'D', W:'W', Z:'Z', X:'X', C:'C', J:'J',
+      A:'A', D:'D', W:'W', Z:'Z', X:'X', C:'C', J:'J', K:'K', // <-- AÑADIDA LA 'K'
       SHIFT: Phaser.Input.Keyboard.KeyCodes.SHIFT
     });
+
+    // Añadir controles de pausa para mantener consistencia
+    this.input.keyboard.on('keydown-P',   () => this._togglePause());
+    this.input.keyboard.on('keydown-ESC', () => this._togglePause());
   }
 
   _setupMobileControls() {
@@ -143,6 +152,20 @@ export default class Stage2Scene extends Phaser.Scene {
       el.addEventListener('touchstart', e => { e.preventDefault(); this._mobileState[key] = true;  }, { passive: false });
       el.addEventListener('touchend',   e => { e.preventDefault(); this._mobileState[key] = false; }, { passive: false });
     });
+  }
+
+  _togglePause() {
+    if (this.gameState === 'playing') {
+      this.gameState = 'paused';
+      this.physics.pause();
+      AudioManager.stopBGM();
+      this.scene.launch('PauseScene');
+    } else if (this.gameState === 'paused') {
+      this.gameState = 'playing';
+      this.physics.resume();
+      AudioManager.playBGM('stage');
+      this.scene.stop('PauseScene');
+    }
   }
 
   update(time, delta) {
