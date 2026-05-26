@@ -1,58 +1,61 @@
-# 🎮 Juego Plataforma 2D (Estilo Megaman) - MEGA X
+# 🎮 MEGA X - Juego de Plataformas 2D (Estilo Megaman)
 
-Un dinámico juego de acción y plataformas en 2D desarrollado con **Phaser 3** y empaquetado mediante **Vite**. El proyecto destaca por su enfoque modular, implementando mecánicas robustas de disparo (normal y cargado), habilidades de desplazamiento rápido (*dash*), sistemas de reciclaje de proyectiles (*object pooling*), e Inteligencia Artificial variada para enemigos terrestres, voladores y jefes mecánicos gigantes.
-
----
-
-### ⚡ Personaje Principal (Estados y Animaciones)
-| Reposo (Idle) | Corriendo (Run) | Salto (Jump) | Impulso (Dash) | Daño (Hurt) |
-| :---: | :---: | :---: | :---: | :---: |
-| <img src="public/assets/player_idle.png" width="50"> | <img src="public/assets/player_run.png" width="50"> | <img src="public/assets/player_jump.png" width="50"> | <img src="public/assets/player_dash.png" width="50"> | <img src="public/assets/player_hurt.png" width="50"> |
-| `player_idle.png` | `player_run.png` | `player_jump.png` | `player_dash.png` | `player_hurt.png` |
-
-### 👾 Enemigos e IA
-| Terrestre Tipo 1 | Terrestre Tipo 2 | Volador | Jefe Mecánico Gigante |
-| :---: | :---: | :---: | :---: |
-| <img src="public/assets/enemy_ground.png" width="50"> | <img src="public/assets/enemy_ground2.png" width="50"> | <img src="public/assets/enemy_fly.png" width="50"> | <img src="public/assets/boss.png" width="90"> |
-| `enemy_ground.png` | `enemy_ground2.png` | `enemy_fly.png` | `boss.png` |
-
-### 🔋 Ítems y Mecánicas
-| Cápsula de Vida | Cápsula de Energía | Checkpoint Inactivo | Checkpoint Activo |
-| :---: | :---: | :---: | :---: |
-| <img src="public/assets/powerup_life.png" width="35"> | <img src="public/assets/powerup_energy.png" width="35"> | <img src="public/assets/checkpoint.png" width="40"> | <img src="public/assets/checkpoint_active.png" width="40"> |
-| `powerup_life.png` | `powerup_energy.png` | `checkpoint.png` | `checkpoint_active.png` |
+Un dinámico videojuego de acción y plataformas en 2D desarrollado con **Phaser 3** y empaquetado mediante **Vite**. El proyecto destaca por su enfoque modular y una arquitectura orientada a objetos que implementa mecánicas robustas de disparo (normal y cargado), habilidades de desplazamiento rápido (*dash*), sistemas de reciclaje de proyectiles (*object pooling*), e Inteligencia Artificial variada para enemigos terrestres, voladores, guardianes de llaves y jefes mecánicos gigantes con fases dinámicas de combate.
 
 ---
 
-## 🚀 Guía de Ejecución
+## 📷 Capturas de Pantalla (Gameplay)
 
-Para ejecutar el proyecto en tu entorno local, asegúrate de tener instalado [Node.js](https://nodejs.org/) (versión 16 o superior recomendada).
+A continuación se muestran los marcadores de posición para las capturas de pantalla de los principales escenarios y menús del juego. 
+
+> 💡 **Instrucciones:** Para mostrar tus propias imágenes, guarda las capturas en una carpeta (por ejemplo, `public/assets/screenshots/`) y reemplaza las rutas de abajo (los enlaces `https://placehold.co/...`) por las rutas relativas correspondientes (ej. `./public/assets/screenshots/menu.png`).
+
+### 🖥️ Menús e Interfaces
+| 🎮 Menú Principal | ⏸️ Menú de Pausa | 💀 Pantalla de Game Over |
+| :---: | :---: | :---: |
+| ![Menú Principal](https://placehold.co/380x220/0a0a20/ffffff?text=Menu+Principal+MEGA+X) <br> *Inicio, Hi-Score y controles* | ![Menú de Pausa](https://placehold.co/380x220/0f0f15/ffffff?text=Juego+Pausado) <br> *Interrupción y ajuste de volumen* | ![Game Over](https://placehold.co/380x220/1a0000/ffffff?text=Game+Over) <br> *Reintentos y guardado de récords* |
+
+### 🕹️ Niveles y Escenarios de Juego
+| 🏙️ Stage 1: La Ciudad | 🌌 Stage 2: El Abismo | 🕷️ Arena del Jefe Final |
+| :---: | :---: | :---: |
+| ![Stage 1 City](https://placehold.co/380x220/050a20/ffffff?text=Stage+1+City+Gameplay) <br> *Mecánica de llaves y plataformas estables* | ![Stage 2 The Abyss](https://placehold.co/380x220/00020a/ffffff?text=Stage+2+The+Abyss) <br> *Generación dinámica de enemigos y vacío* | ![Boss Arena](https://placehold.co/380x220/1a0505/ffffff?text=Boss+Arena+Spider) <br> *Combate final contra la araña mecánica* |
+
+---
+
+## ⚡ Elementos Gráficos y Sprites (Procedurales)
+
+Todas las texturas e imágenes del juego se generan dinámicamente mediante código canvas en `GraphicsFactory.js`, asegurando un renderizado pixel-art limpio, rápido y libre de dependencias externas de archivos de imagen pesados.
+
+
+## 🚀 Guía de Ejecución Local
+
+Para ejecutar el proyecto en tu entorno local, asegúrate de tener instalado [Node.js](https://nodejs.org/) (versión 16 o superior).
 
 ### 1. Clonar el repositorio e instalar dependencias
-Abre tu terminal en la carpeta raíz del proyecto e instala los módulos necesarios de Node:
-` ` `bash
+Abre tu terminal en la carpeta raíz del proyecto e instala los módulos necesarios:
+```bash
 npm install
-` ` `
+```
 
 ### 2. Ejecutar el servidor de desarrollo
-Inicia el entorno local con recarga en vivo de Vite:
-` ` `bash
+Inicia el entorno local con recarga en vivo provisto por Vite:
+```bash
 npm run dev
-` ` `
-Una vez iniciado, abre tu navegador web en la dirección local provista (usualmente `http://localhost:5173`).
+```
+Una vez iniciado, abre tu navegador web en la dirección local indicada (usualmente `http://localhost:3000` o `http://localhost:5173`).
 
 ### 3. Construir para producción
-Para compilar y optimizar el juego para su distribución en producción:
-` ` `bash
+Para compilar y optimizar todos los recursos de cara a su distribución final en producción:
+```bash
 npm run build
-` ` `
+```
 Los archivos optimizados se generarán dentro del directorio `dist/`.
 
 ---
 
 ## 🕹️ Controles del Juego
 
-El sistema soporta tanto controles por teclado (PC) como botones táctiles en pantalla para dispositivos móviles.
+El sistema soporta tanto controles nativos por teclado (PC) como una interfaz táctil mapeada dinámicamente en pantalla para dispositivos móviles.
 
 ### Teclado (PC)
 
@@ -64,70 +67,64 @@ El sistema soporta tanto controles por teclado (PC) como botones táctiles en pa
 | **Desplazamiento (*Dash*)** | `C` / `SHIFT` | Impulso rápido horizontal en la dirección actual. |
 | **Disparar Normal** | Presión rápida en `X` o `J` | Lanza un proyectil estándar (gasta 2 de energía). |
 | **Disparo Cargado** | Mantener presionado `X` o `J` (>800ms) | Desata un mega proyectil de alto impacto (gasta 14 de energía). |
-| **Pausar Juego** | `P` / `ESC` | Pausa las físicas y el tiempo del juego; abre el menú de pausa. |
-
-### Controles Móviles (Táctiles)
-El juego mapea automáticamente eventos `touchstart` y `touchend` en los siguientes contenedores de la interfaz web:
-* `btn-left` / `btn-right`: Movimiento lateral.
-* `btn-up` / `btn-jump`: Salto y doble salto.
-* `btn-shoot`: Control de disparo (detecta pulsación y ráfaga).
-* `btn-dash`: Activación del impulso rápido.
+| **Pausar Juego** | `P` / `ESC` | Detiene de forma segura el tiempo y abre el menú de pausa. |
 
 ---
 
 ## 📁 Estructura del Proyecto
 
-El código fuente está diseñado bajo un enfoque modular y orientado a objetos, separando las entidades físicas, los managers globales y el ciclo de vida de las escenas de Phaser:
+El código fuente está diseñado bajo un enfoque modular y orientado a componentes, distribuyéndose de la siguiente manera:
 
 ```
 juego_plataforma2d/
 ├── public/
-│   └── assets/               # Spritesheets, fondos, tiles de plataformas y FX de explosión
+│   └── assets/               # Carpeta opcional para recursos estáticos externos
 ├── src/
 │   ├── audio/
-│   │   └── AudioManager.js   # Administrador central de efectos de sonido (SFX) y música de fondo (BGM)
+│   │   └── AudioManager.js   # Administrador de música (BGM) y efectos (SFX) usando Web Audio API
 │   ├── managers/
-│   │   ├── GraphicsFactory.js# Generación y manipulación dinámica de texturas
-│   │   └── StorageManager.js # Persistencia local de puntuaciones altas (Highscores) y progreso
+│   │   ├── GraphicsFactory.js# Generación procedural de texturas e imágenes con Canvas 2D
+│   │   └── StorageManager.js # Persistencia en LocalStorage (Highscores, volumen, niveles)
 │   ├── objects/
-│   │   ├── Player.js         # Clase del jugador: físicas, estados de daño, invencibilidad y armas
-│   │   └── Enemy.js          # Clases de IA enemiga (EnemyGround, EnemyFlying, EnemyKeyHolder, Boss)
+│   │   ├── Player.js         # Clase del jugador: físicas, estados, invencibilidad y buster
+│   │   └── Enemy.js          # Clases base de IA (EnemyGround, EnemyFlying, EnemyKeyHolders, Boss)
 │   ├── physics/
-│   │   └── CollisionHelper.js# Desacoplamiento de colisiones y solapamientos (overlaps) de Phaser
+│   │   └── CollisionHelper.js# Centralizador de colisiones y solapamientos (overlaps) de Arcade Physics
 │   ├── scenes/
-│   │   ├── BootScene.js      # Inicialización inicial del motor
-│   │   ├── PreloadScene.js   # Carga optimizada de recursos gráficos y de audio
-│   │   ├── MenuScene.js      # Pantalla principal de inicio
-│   │   ├── Stage1Scene.js    # Nivel 1: Mecánica de llave, puertas bloqueadas y enemigos terrestres
-│   │   ├── Stage2Scene.js    # Nivel 2 (Abismo): Enfoque aéreo, plataformas flotantes y vacío mortal
-│   │   ├── BossScene.js      # Arena de combate final contra el jefe mecánico
-│   │   ├── HUDScene.js       # Capa superior de interfaz de usuario en tiempo real (vida, energía, score)
-│   │   ├── PauseScene.js     # Menú de interrupción del juego
-│   │   ├── GameOverScene.js  # Pantalla de derrota y reinicio
-│   │   └── VictoryScene.js   # Pantalla de éxito tras derrotar al jefe
+│   │   ├── BootScene.js      # Inicialización del registro global de datos
+│   │   ├── PreloadScene.js   # Pantalla de carga y pipeline gráfico procedural
+│   │   ├── MenuScene.js      # Pantalla principal de inicio con récords e instrucciones
+│   │   ├── Stage1Scene.js    # Nivel 1 (Ciudad): Mecánica de puerta blindada y portador de llave
+│   │   ├── Stage2Scene.js    # Nivel 2 (Abismo): Enfoque aéreo, caída mortal y generadores dinámicos
+│   │   ├── BossScene.js      # Arena de combate final contra la araña mecánica gigante
+│   │   ├── HUDScene.js       # Capa de interfaz de usuario en tiempo real (barras HP, Energía, Score)
+│   │   ├── PauseScene.js     # Menú interactivo de interrupción del juego
+│   │   ├── GameOverScene.js  # Pantalla de derrota, reintentos y actualización de récords
+│   │   └── VictoryScene.js   # Pantalla de éxito tras neutralizar al jefe
 │   ├── ui/
-│   │   └── HUD.js            # Lógica de renderizado y actualización de barras de estado
-│   └── main.js               # Archivo de entrada de Vite y configuración del objeto Phaser.Game
-├── index.html                # Contenedor HTML principal del lienzo de juego y los controles móviles
-└── vite.config.js            # Configuración del empaquetador Vite
+│   │   └── HUD.js            # Lógica de renderizado y refresco periódico de barras de estado
+│   └── main.js               # Punto de entrada de Vite y configuración del motor Phaser.Game
+├── index.html                # Contenedor HTML principal del lienzo y botones táctiles integrados
+└── vite.config.js            # Archivo de configuración del empaquetador Vite
 ```
 
 ---
 
-## 🛠️ Características Técnicas Destacadas
+## 🛠️ Características Técnicas Avanzadas
 
-1. **Object Pooling para Proyectiles:** Las balas normales y cargadas se gestionan mediante grupos estricto-máximos de Phaser, reutilizando los cuerpos físicos desactivados en lugar de instanciar nuevos objetos continuamente, optimizando el rendimiento de memoria.
-2. **Modularidad en Físicas:** El archivo `CollisionHelper.js` centraliza las interacciones mutuas del juego. Esto resolvió problemas críticos como la inversión de parámetros en callbacks de Phaser y permitió aislar a los enemigos voladores para que no se atasquen con las plataformas del escenario.
-3. **Mecánica de Progreso Integrada:** El flujo del mapa requiere derrotar a enemigos específicos (`EnemyKeyHolder`) para obtener llaves físicas, procesar colisiones en zonas de transición y guardar checkpoints interactivos mediante el almacenamiento del navegador.
+1. **Object Pooling para Proyectiles:** Las ráfagas de disparos normales y cargados se gestionan reutilizando instancias de cuerpos físicos inactivos dentro de un pool estricto de Phaser, minimizando la recolección de basura (*Garbage Collection*) y asegurando un rendimiento estable a 60 FPS.
+2. **Generador Cíclico Dinámico (Stage 2):** Implementation de un *Spawner* controlado por eventos de tiempo adaptativos que calcula la posición horizontal por delante del jugador para instanciar drones aéreos de manera infinita mientras cruza el abismo, deteniéndose de manera segura al tocar zona firme.
+3. **Mecánica de Progresión Condicional (Llave/Puerta):** Separación de responsabilidades lógicas donde ciertos enemigos (`EnemyFlyingKeyHolder`) heredan comportamientos base pero gatillan eventos personalizados en la escena al morir, obligando al jugador a explorar y combatir antes de desbloquear los colisionadores de las compuertas de transición.
+4. **Sistema de Invencibilidad Robusto:** El estado de daño por colisión limpia de forma estricta los temporizadores antiguos en el *respawn*, controlando estados mediante opacidades alternas parpadeantes para evitar colisiones redundantes continuadas en zonas críticas o de picos (*spikes*).
 
 ---
 
 ## 👥 Créditos
 
-Desarrollado con pasión por: 
+Proyecto desarrollado por:
 
-David Puga
-Joseph Jimenez
-Francis Bravo
+- David Puga
+- Joseph Jimenez
+- Francis Bravo
 
-*Agradecimientos especiales a la comunidad de desarrollo independiente por los assets base e inspiración tomados de las mecánicas clásicas de la era de los 16 bits.*
+*Desarrollado con pasión utilizando Phaser 3 como framework principal de desarrollo web 2D.*
