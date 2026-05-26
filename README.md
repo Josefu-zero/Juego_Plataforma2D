@@ -126,8 +126,8 @@ juego_plataforma2d/
 
 Desarrollado con pasión por: 
 
-David Puga
-Joseph Jimenez
-Francis Bravo
+- David Puga
+- Joseph Jimenez
+- Francis Bravo
 
 *Agradecimientos especiales a la comunidad de desarrollo independiente por los assets base e inspiración tomados de las mecánicas clásicas de la era de los 16 bits.*
