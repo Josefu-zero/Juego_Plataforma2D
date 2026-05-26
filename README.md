@@ -8,8 +8,6 @@ Un dinámico videojuego de acción y plataformas en 2D desarrollado con **Phaser
 
 A continuación se muestran los marcadores de posición para las capturas de pantalla de los principales escenarios y menús del juego. 
 
-> 💡 **Instrucciones:** Para mostrar tus propias imágenes, guarda las capturas en una carpeta (por ejemplo, `public/assets/screenshots/`) y reemplaza las rutas de abajo (los enlaces `https://placehold.co/...`) por las rutas relativas correspondientes (ej. `./public/assets/screenshots/menu.png`).
-
 ### 🖥️ Menús e Interfaces
 | 🎮 Menú Principal | ⏸️ Menú de Pausa | 💀 Pantalla de Game Over |
 | :---: | :---: | :---: |
