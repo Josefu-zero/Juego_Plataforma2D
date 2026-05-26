@@ -90,14 +90,14 @@ export default class Stage2Scene extends Phaser.Scene {
   }
 
   _spawnEnemies() {
-    // Solo instanciamos EnemyFlying
+    // Coordenadas Y ajustadas para que siempre aparezcan dentro de la pantalla
     const defs = [
-      [400, this.H - 300], 
-      [600, this.H - 250], 
-      [900, this.H - 350],
-      [1100, this.H - 200],
-      [1350, this.H - 380],
-      [1600, this.H - 280]
+      [400, this.H - 220], 
+      [600, this.H - 180], 
+      [900, this.H - 250],
+      [1100, this.H - 160],
+      [1350, this.H - 240],
+      [1600, this.H - 200]
     ];
     
     defs.forEach(([x, y]) => {
@@ -185,7 +185,10 @@ export default class Stage2Scene extends Phaser.Scene {
     this.enemies.forEach(e => { if (e.isAlive) e.update(this.player, delta); });
 
     // ⚠️ LA MECÁNICA DEL ABISMO: Si el jugador cae por debajo de la pantalla, muere.
-    if (this.player.y > this.H + 60) this.player.die();
+    if (this.player.y > this.H + 60 && !this.player.isDead) {
+      this.player.health = 0; // <-- Forzar vida a 0 para que el HUD reaccione
+      this.player.die();
+    }
 
     const e = this.registry.get('energy');
     if (e < 100) this.registry.set('energy', Math.min(100, e + delta * 0.012));

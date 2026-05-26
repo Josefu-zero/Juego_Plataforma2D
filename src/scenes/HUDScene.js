@@ -16,12 +16,14 @@ export default class HUDScene extends Phaser.Scene {
     this.time.addEvent({
       delay: 50, loop: true,
       callback: () => {
-        // Buscar la escena de juego activa
+        /// Buscar la escena de juego activa
         const gameScene = this.scene.get('Stage1Scene')?.sys.isActive()
           ? this.scene.get('Stage1Scene')
-          : this.scene.get('BossScene')?.sys.isActive()
-            ? this.scene.get('BossScene')
-            : null;
+          : this.scene.get('Stage2Scene')?.sys.isActive() // <-- ¡AÑADIR ESTA COMPROBACIÓN!
+            ? this.scene.get('Stage2Scene')
+            : this.scene.get('BossScene')?.sys.isActive()
+              ? this.scene.get('BossScene')
+              : null;
 
         this.hud.update(this.registry, gameScene);
       }
