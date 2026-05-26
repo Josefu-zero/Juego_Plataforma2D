@@ -32,9 +32,10 @@ export default class Stage2Scene extends Phaser.Scene {
     this.spikes    = this.physics.add.staticGroup(); //
     this._buildLevel(LEVEL_W, H);
 
-    this.player = new Player(this, 100, H - 200); //
-    this.checkpointX = 100; //
-    this.checkpointY = H - 200; 
+    // Ajustada la posición inicial para que el jugador aparezca sobre el piso firme
+    this.player = new Player(this, 96, H - 96); //
+    this.checkpointX = 96; //
+    this.checkpointY = H - 96; //
 
     this.checkpoints = this.physics.add.staticGroup(); //
     this._buildCheckpoints(H);
@@ -42,14 +43,22 @@ export default class Stage2Scene extends Phaser.Scene {
     this.enemies = []; //
     this._spawnEnemies();
 
-    // ── Puerta ──────────────────────────────────────────
+    // ── Puerta (Ajustada pegada a la pared final) ──────
     this._buildDoor(LEVEL_W, H);
 
-    // Zona de transición al Boss detrás de la puerta
-    this.bossZone = this.add.zone(LEVEL_W - 120, H / 2, 60, H);
+    // FIX: Zona de transición desplazada a la izquierda de la pared para que sea alcanzable al cruzar la puerta
+    this.bossZone = this.add.zone(LEVEL_W - 90, H / 2, 50, H);
     this.physics.world.enable(this.bossZone);
     this.bossZone.body.setAllowGravity(false);
     this.bossZone.body.immovable = true;
+
+    // NUEVO: Temporizador cíclico que genera un enemigo volador cada 3 segundos (3000 ms)
+    this.flyingSpawnerTimer = this.time.addEvent({
+      delay: 3000,
+      callback: this._spawnFlyingEnemyDynamic,
+      callbackScope: this,
+      loop: true
+    });
 
     this.cameras.main.setBounds(0, 0, LEVEL_W, H); //
     this.cameras.main.startFollow(this.player, true, 0.1, 0.1); //
@@ -84,11 +93,26 @@ export default class Stage2Scene extends Phaser.Scene {
   }
 
   _buildLevel(LW, H) {
-    // Generamos pinchos en el abismo, deteniéndonos antes de la sección final
-    for (let x = 0; x < LW; x += TILE) {
+    // Muro de contención al INICIO izquierdo para evitar que el jugador retroceda
+    for (let y = 0; y < H; y += TILE) {
+      this.platforms.create(TILE / 2, y, 'tile_wall')
+        .setDisplaySize(TILE, TILE).refreshBody(); //
+    }
+
+    // Piso firme al inicio del nivel para que aparezca el jugador (primeros 256 píxeles)
+    for (let x = TILE; x < 256; x += TILE) {
+      for (let layer = 0; layer < 2; layer++) {
+        this.platforms.create(
+          x + TILE / 2, H - layer * TILE - TILE / 2, 'tile'
+        ).setDisplaySize(TILE, TILE).refreshBody(); //
+      }
+    }
+
+    // Generamos pinchos en el abismo
+    for (let x = 256; x < LW; x += TILE) {
       if (x < LW - 320) {
         this.spikes.create(x + TILE/2, H - TILE/2, 'tile_spike')
-          .setDisplaySize(TILE, 16).refreshBody(); 
+          .setDisplaySize(TILE, 16).refreshBody(); //
       }
     }
 
@@ -97,26 +121,25 @@ export default class Stage2Scene extends Phaser.Scene {
       for (let layer = 0; layer < 2; layer++) {
         this.platforms.create(
           x + TILE/2, H - layer * TILE - TILE/2, 'tile'
-        ).setDisplaySize(TILE, TILE).refreshBody();
+        ).setDisplaySize(TILE, TILE).refreshBody(); //
       }
     }
 
-    // NUEVO: Muro de contención al final absoluto del mapa para que el jugador no avance al vacío vacío
+    // Muro de contención al final absoluto del mapa
     for (let y = 0; y < H; y += TILE) {
       this.platforms.create(LW - TILE/2, y, 'tile_wall')
         .setDisplaySize(TILE, TILE).refreshBody(); //
     }
 
-    // Plataformas flotantes
+    // Plataformas flotantes intermedias
     const platDefs = [
-      { x: 100,  y: H - 150, tex: 'platform' },
-      { x: 300,  y: H - 220, tex: 'platform_sm' },
-      { x: 500,  y: H - 180, tex: 'platform' },    
-      { x: 750,  y: H - 260, tex: 'platform_sm' },
-      { x: 950,  y: H - 140, tex: 'platform' },
-      { x: 1200, y: H - 280, tex: 'platform' },    
-      { x: 1450, y: H - 200, tex: 'platform_sm' },
-      { x: 1700, y: H - 160, tex: 'platform' }
+      { x: 350,  y: H - 220, tex: 'platform_sm' }, //
+      { x: 550,  y: H - 180, tex: 'platform' },    //
+      { x: 750,  y: H - 260, tex: 'platform_sm' }, //
+      { x: 950,  y: H - 140, tex: 'platform' }, //
+      { x: 1200, y: H - 280, tex: 'platform' },    //
+      { x: 1450, y: H - 200, tex: 'platform_sm' }, //
+      { x: 1700, y: H - 160, tex: 'platform' } //
     ];
 
     platDefs.forEach(p => {
@@ -126,103 +149,129 @@ export default class Stage2Scene extends Phaser.Scene {
     });
   }
 
+  // MODIFICADO: Colocada la puerta justo pegada al muro final (LW - 52)
   _buildDoor(LW, H) {
-    const doorX = LW - 220;
-    const doorY = H - 96; 
+    const doorX = LW - 52; 
+    const doorY = H - 96; //
 
-    this.door = this.physics.add.staticImage(doorX, doorY, 'door_closed');
-    this.door.setDisplaySize(40, 64).refreshBody();
-    this.door.setDepth(5);
-    this.door.isOpen = false;
+    this.door = this.physics.add.staticImage(doorX, doorY, 'door_closed'); //
+    this.door.setDisplaySize(40, 64).refreshBody(); //
+    this.door.setDepth(5); //
+    this.door.isOpen = false; //
 
     this.tweens.add({
       targets: this.door,
       alpha: 0.85,
       duration: 800, yoyo: true, repeat: -1, ease: 'Sine.easeInOut'
-    });
+    }); //
   }
 
-  // MODIFICADO: Abre automáticamente sin requerir ninguna mecánica de llaves
   _tryOpenDoor() {
-    if (this.doorOpen) return;
-    this.doorOpen    = true;
-    this.door.isOpen = true;
+    if (this.doorOpen) return; //
+    this.doorOpen    = true; //
+    this.door.isOpen = true; //
 
-    this.door.setTexture('door_open').setDisplaySize(40, 64).refreshBody();
-    this.tweens.killTweensOf(this.door);
-    this.door.setAlpha(1);
+    this.door.setTexture('door_open').setDisplaySize(40, 64).refreshBody(); //
+    this.tweens.killTweensOf(this.door); //
+    this.door.setAlpha(1); //
 
-    // Desactivar colisión física para permitir cruzar al jugador inmediatamente
-    this.door.body.enable = false;
+    this.door.body.enable = false; //
 
-    AudioManager.playSFXCheckpoint();
-    this._showMessage('¡PUERTA ABIERTA!', '#00ff88', 1800);
+    AudioManager.playSFXCheckpoint(); //
+    this._showMessage('¡PUERTA ABIERTA!', '#00ff88', 1800); //
 
-    this.cameras.main.flash(200, 0, 255, 100);
+    this.cameras.main.flash(200, 0, 255, 100); //
   }
 
   _buildCheckpoints(H) {
     const cpDefs = [
-      { x: 500,  y: H - 180 },
-      { x: 1200, y: H - 280 }
+      { x: 550,  y: H - 180 }, //
+      { x: 1200, y: H - 280 }  //
     ];
 
     cpDefs.forEach(cpDef => {
       const cp = this.checkpoints.create(cpDef.x, cpDef.y - 28, 'checkpoint')
-        .setDisplaySize(20, 36).refreshBody(); 
-      cp.activated = false; 
-      cp.cpX = cpDef.x; 
-      cp.cpY = cpDef.y - 50; 
+        .setDisplaySize(20, 36).refreshBody(); //
+      cp.activated = false; //
+      cp.cpX = cpDef.x; //
+      cp.cpY = cpDef.y - 50; //
     });
   }
 
   _spawnEnemies() {
     const defs = [
-      [400, this.H - 220], 
-      [600, this.H - 180], 
-      [900, this.H - 250],
-      [1100, this.H - 160],
-      [1350, this.H - 240],
-      [1600, this.H - 200]
+      [400, this.H - 220], //
+      [600, this.H - 180], //
+      [900, this.H - 250], //
+      [1100, this.H - 160], //
+      [1350, this.H - 240], //
+      [1600, this.H - 200]  //
     ];
     
     defs.forEach(([x, y]) => {
-      this.enemies.push(new EnemyFlying(this, x, y)); 
+      this.enemies.push(new EnemyFlying(this, x, y)); //
+    });
+  }
+
+  // NUEVO: Genera dinámicamente un enemigo volador adelante del jugador cada 3 segundos
+  _spawnFlyingEnemyDynamic() {
+    if (this.gameState !== 'playing' || !this.player || this.player.isDead) return;
+
+    // Aparece 400 píxeles por delante del jugador, controlando que no exceda los límites del mapa
+    const spawnX = Math.min(this.player.x + 400, this.LEVEL_W - 350);
+    
+    // Altura aleatoria por encima del abismo para dar dinamismo
+    const spawnY = Phaser.Math.Between(this.H - 260, this.H - 140);
+
+    // Evitar que sigan spawneando enemigos si el jugador ya está en la zona segura final
+    if (this.player.x > this.LEVEL_W - 360) return;
+
+    const newEnemy = new EnemyFlying(this, spawnX, spawnY);
+    this.enemies.push(newEnemy);
+
+    // Enlazar dinámicamente las colisiones para el nuevo enemigo generado
+    CollisionHelper.playerBulletsVsEnemy(this, this.player, newEnemy, (bullet, enemy, dmg) => {
+      enemy.takeDamage(dmg); //
+    });
+    CollisionHelper.playerVsEnemy(this, this.player, newEnemy, () => {
+      if (!newEnemy.isAlive) return; //
+      this.player.takeDamage(1); //
+    });
+    CollisionHelper.enemyBulletsVsPlayer(this, newEnemy, this.player, () => {
+      this.player.takeDamage(1); //
     });
   }
 
   _setupCollisions() {
     const P = this.player; //
 
-    CollisionHelper.playerVsPlatforms(this, P, this.platforms);
-    CollisionHelper.playerVsSpikes(this, P, this.spikes, () => P.takeDamage(2)); 
+    CollisionHelper.playerVsPlatforms(this, P, this.platforms); //
+    CollisionHelper.playerVsSpikes(this, P, this.spikes, () => P.takeDamage(2)); //
 
     CollisionHelper.playerVsCheckpoints(this, P, this.checkpoints,
       (pl, cp) => {
-        if (cp.activated) return;
-        cp.activated = true;
-        cp.setTexture('checkpoint_active').setDisplaySize(20, 36).refreshBody(); 
-        this.checkpointX = cp.cpX; 
-        this.checkpointY = cp.cpY; 
-        this._showMessage('CHECKPOINT!', '#ff4466'); 
-        AudioManager.playSFXCheckpoint(); 
-        StorageManager.saveLevel(this.registry.get('level')); 
+        if (cp.activated) return; //
+        cp.activated = true; //
+        cp.setTexture('checkpoint_active').setDisplaySize(20, 36).refreshBody(); //
+        this.checkpointX = cp.cpX; //
+        this.checkpointY = cp.cpY; //
+        this._showMessage('CHECKPOINT!', '#ff4466'); //
+        AudioManager.playSFXCheckpoint(); //
+        StorageManager.saveLevel(this.registry.get('level')); //
       }
     );
 
-    // Colisión e interacción por overlap para cruzar la puerta
-    this.physics.add.collider(P, this.door);
+    this.physics.add.collider(P, this.door); //
     this.physics.add.overlap(P, this.door, () => {
-      if (!this.door.isOpen && !this.doorOpen) {
-        this._tryOpenDoor();
+      if (!this.door.isOpen && !this.doorOpen) { //
+        this._tryOpenDoor(); //
       }
     });
 
-    // Transición al Boss
     this.physics.add.overlap(P, this.bossZone, () => {
-      if (this.gameState !== 'playing') return; 
-      if (!this.doorOpen) return;
-      this._goToBoss();
+      if (this.gameState !== 'playing') return; //
+      if (!this.doorOpen) return; //
+      this._goToBoss(); //
     });
 
     this.enemies.forEach(e => {
@@ -318,7 +367,7 @@ export default class Stage2Scene extends Phaser.Scene {
         energy: this.registry.get('energy')
       }); //
       this.scene.launch('HUDScene'); //
-      this.scene.stop('Stage2Scene');
+      this.scene.stop('Stage2Scene'); //
     });
   }
 
@@ -336,7 +385,7 @@ export default class Stage2Scene extends Phaser.Scene {
       this.time.delayedCall(700, () => {
         const P = this.player; //
         P.resetDamageState(); //
-        P.setPosition(this.checkpointX, this.checkpointY); 
+        P.setPosition(this.checkpointX, this.checkpointY); //
         P.health = P.maxHealth; //
         P.body.setVelocity(0, 0); //
         this.registry.set('energy', 100); //
