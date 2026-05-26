@@ -335,8 +335,12 @@ export default class Stage1Scene extends Phaser.Scene {
     const P = this.player;
 
     CollisionHelper.playerVsPlatforms(this, P, this.platforms);
-    CollisionHelper.enemiesVsPlatforms(this, this.enemies, this.platforms);
 
+    // 👇 MODIFICACIÓN AQUÍ: Filtramos para ignorar a los EnemyFlying
+    // Los enememigos voladores no colisionan con el suelo, solo con el jugador y sus balas
+    const groundEnemies = this.enemies.filter(e => !(e instanceof EnemyFlying));
+    CollisionHelper.enemiesVsPlatforms(this, groundEnemies, this.platforms);
+    
     this.enemies.forEach(e => {
       // ✅ FIX DAÑO: balas del jugador → enemigo
       CollisionHelper.playerBulletsVsEnemy(this, P, e, (bullet, enemy, dmg) => {
