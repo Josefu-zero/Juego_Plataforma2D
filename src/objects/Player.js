@@ -13,8 +13,8 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
     scene.add.existing(this);
     scene.physics.add.existing(this);
 
-    this.body.setSize(22, 36);
-    this.body.setOffset(5, 4);
+    this.body.setSize(24, 26);
+    this.body.setOffset(4, 4);
     this.setDepth(5);
 
     this.facing       = 1;

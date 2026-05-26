@@ -149,9 +149,10 @@ export default class Stage2Scene extends Phaser.Scene {
     });
   }
 
-  // MODIFICADO: Colocada la puerta justo pegada al muro final (LW - 52)
+  // MODIFICADO: Colocada la puerta completamente pegada al muro final
   _buildDoor(LW, H) {
-    const doorX = LW - 52; 
+    // TILE es 32, así que LW - 48 la deja justo al borde del muro de contención final
+    const doorX = LW - 48; 
     const doorY = H - 96; //
 
     this.door = this.physics.add.staticImage(doorX, doorY, 'door_closed'); //
@@ -175,7 +176,9 @@ export default class Stage2Scene extends Phaser.Scene {
     this.tweens.killTweensOf(this.door); //
     this.door.setAlpha(1); //
 
-    this.door.body.enable = false; //
+    // CORRECCIÓN: Usar el método correcto de Phaser para desactivar el cuerpo físico
+    // manteniendo la imagen visible en el mapa
+    this.door.disableBody(false, false); 
 
     AudioManager.playSFXCheckpoint(); //
     this._showMessage('¡PUERTA ABIERTA!', '#00ff88', 1800); //
@@ -261,13 +264,22 @@ export default class Stage2Scene extends Phaser.Scene {
       }
     );
 
-    this.physics.add.collider(P, this.door); //
+    // NUEVO: Quitamos el collider sólido para que no bloquee al jugador,
+    // y hacemos que apenas la toque (overlap), cambie la textura y pase al Boss.
     this.physics.add.overlap(P, this.door, () => {
-      if (!this.door.isOpen && !this.doorOpen) { //
-        this._tryOpenDoor(); //
-      }
+      if (this.gameState !== 'playing') return; //
+      
+      // Efecto visual instantáneo de apertura
+      this.doorOpen = true;
+      this.door.isOpen = true;
+      this.door.setTexture('door_open').setDisplaySize(40, 64).refreshBody();
+      this.door.disableBody(true, false); // Elimina cualquier física remanente
+
+      // Ir directamente a la escena del jefe
+      this._goToBoss(); //
     });
 
+    // Puedes mantener o quitar la bossZone anterior, ya que la puerta ahora hace el trabajo directo
     this.physics.add.overlap(P, this.bossZone, () => {
       if (this.gameState !== 'playing') return; //
       if (!this.doorOpen) return; //

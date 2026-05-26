@@ -4,11 +4,19 @@
  * Assets completamente rediseñados (jugador, boss, tiles, powerups, items).
  */
 
-const W1 = '#ffffff';
-const B1 = '#000000';
-const A1 = '#00ccff';   // azul cian (jugador)
-const A2 = '#ff3333';   // rojo (enemigos)
-const GR = '#888888';
+const W1 = '#f8fbff';
+const B1 = '#030714';
+const C1 = '#10e4ff';
+const C2 = '#6ff9ff';
+const V1 = '#8a5dff';
+const V2 = '#d44cff';
+const R1 = '#ff5c6c';
+const R2 = '#ff8d73';
+const G1 = '#1cffbe';
+const Y1 = '#ffd166';
+const S1 = '#0d1330';
+const S2 = '#111a36';
+const GR = '#5d6688';
 
 const GF = {
 
@@ -48,88 +56,80 @@ const GF = {
     });
   },
 
-  // ─── JUGADOR — suit futurista verde neón ─────────────────
+  // ─── JUGADOR — suit futurista neón ───────────────────────
   _player() {
     const drawPlayer = (ctx, legFlip, color, helmetColor) => {
       ctx.fillStyle = B1;
       ctx.fillRect(0, 0, 32, 32);
-      // Cabeza
-      ctx.fillStyle = helmetColor || '#00cc88';
+      ctx.fillStyle = helmetColor || C1;
       ctx.fillRect(10, 2, 12, 10);
-      // Visera
-      ctx.fillStyle = '#aaffee';
+      ctx.fillStyle = C2;
       ctx.fillRect(11, 4, 10, 5);
-      ctx.fillStyle = '#00ffcc';
+      ctx.fillStyle = W1;
       ctx.fillRect(12, 5, 8, 3);
-      // Cuello
-      ctx.fillStyle = '#008855';
+      ctx.fillStyle = S2;
       ctx.fillRect(13, 12, 6, 2);
-      // Torso
-      ctx.fillStyle = color || '#00aa66';
+      ctx.fillStyle = color || C1;
       ctx.fillRect(8, 14, 16, 10);
-      // Pecho detalle
-      ctx.fillStyle = '#00ffaa';
+      ctx.fillStyle = G1;
       ctx.fillRect(11, 15, 3, 3);
       ctx.fillRect(18, 15, 3, 3);
-      ctx.fillStyle = '#004433';
+      ctx.fillStyle = S2;
       ctx.fillRect(14, 15, 4, 4);
-      // Brazo izquierdo
-      ctx.fillStyle = '#008855';
+      ctx.fillStyle = V1;
       ctx.fillRect(4, 14, 4, 8);
-      ctx.fillStyle = '#00ccaa';
-      ctx.fillRect(4, 20, 5, 3); // cañón
-      ctx.fillStyle = '#00ffee';
+      ctx.fillStyle = C2;
+      ctx.fillRect(4, 20, 5, 3);
+      ctx.fillStyle = W1;
       ctx.fillRect(3, 21, 2, 2);
-      // Brazo derecho
-      ctx.fillStyle = '#008855';
+      ctx.fillStyle = V1;
       ctx.fillRect(24, 14, 4, 8);
-      // Cintura
-      ctx.fillStyle = '#005533';
+      ctx.fillStyle = S2;
       ctx.fillRect(9, 24, 14, 3);
-      // Piernas
       if (!legFlip) {
-        ctx.fillStyle = '#00aa66';
+        ctx.fillStyle = C1;
         ctx.fillRect(10, 27, 5, 4);
         ctx.fillRect(17, 27, 5, 4);
-        ctx.fillStyle = '#005533';
+        ctx.fillStyle = S2;
         ctx.fillRect(10, 30, 5, 2);
         ctx.fillRect(17, 30, 5, 2);
       } else {
-        ctx.fillStyle = '#00aa66';
+        ctx.fillStyle = C1;
         ctx.fillRect(9, 27, 5, 4);
         ctx.fillRect(18, 27, 5, 4);
-        ctx.fillStyle = '#005533';
+        ctx.fillStyle = S2;
         ctx.fillRect(9, 30, 5, 2);
         ctx.fillRect(18, 30, 5, 2);
       }
     };
 
-    this._t('player_idle', 32, 32, ctx => drawPlayer(ctx, false, '#00aa66', '#00cc88'));
-    this._t('player_run', 32, 32, ctx => drawPlayer(ctx, true, '#00aa66', '#00cc88'));
+    this._t('player_idle', 32, 32, ctx => drawPlayer(ctx, false, C1, C2));
+    this._t('player_run', 32, 32, ctx => drawPlayer(ctx, true, C1, C2));
     this._t('player_jump', 32, 32, ctx => {
-      drawPlayer(ctx, false, '#00aa66', '#00cc88');
-      // Efecto de salto — pequeño aura
-      ctx.fillStyle = 'rgba(0,255,180,0.15)';
+      drawPlayer(ctx, false, C1, C2);
+      ctx.fillStyle = 'rgba(16,228,255,0.14)';
       ctx.fillRect(4, 24, 24, 8);
     });
     this._t('player_dash', 36, 28, ctx => {
-      ctx.fillStyle = B1; ctx.fillRect(0, 0, 36, 28);
-      ctx.fillStyle = 'rgba(0,200,150,0.25)';
+      ctx.fillStyle = B1;
+      ctx.fillRect(0, 0, 36, 28);
+      ctx.fillStyle = 'rgba(138,93,255,0.28)';
       ctx.fillRect(0, 2, 12, 24);
-      drawPlayer(ctx, false, '#00cc88', '#00ffaa');
+      drawPlayer(ctx, false, V1, G1);
     });
     this._t('player_hurt', 32, 32, ctx => {
-      ctx.fillStyle = B1; ctx.fillRect(0, 0, 32, 32);
-      // igual pero rojo
-      ctx.fillStyle = '#cc2200';
+      ctx.fillStyle = B1;
+      ctx.fillRect(0, 0, 32, 32);
+      ctx.fillStyle = R1;
       ctx.fillRect(10, 2, 12, 10);
-      ctx.fillStyle = '#ff6644';
+      ctx.fillStyle = R2;
       ctx.fillRect(11, 4, 10, 5);
-      ctx.fillStyle = '#882200';
+      ctx.fillStyle = '#8a1230';
       ctx.fillRect(8, 14, 16, 10);
-      ctx.fillStyle = '#882200';
+      ctx.fillStyle = '#8a1230';
       ctx.fillRect(4, 14, 4, 8);
       ctx.fillRect(24, 14, 4, 8);
+      ctx.fillStyle = '#26030d';
       ctx.fillRect(9, 24, 14, 3);
       ctx.fillRect(10, 27, 5, 4);
       ctx.fillRect(17, 27, 5, 4);
@@ -140,9 +140,9 @@ const GF = {
   _bullets() {
     this._t('bullet', 14, 6, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0, 0, 14, 6);
-      ctx.fillStyle = '#00ffcc';
+      ctx.fillStyle = C2;
       ctx.fillRect(1, 2, 10, 2);
-      ctx.fillStyle = '#00aaff';
+      ctx.fillStyle = C1;
       ctx.fillRect(2, 1, 8, 4);
       ctx.fillStyle = W1;
       ctx.fillRect(10, 2, 3, 2);
@@ -150,10 +150,9 @@ const GF = {
 
     this._t('bullet_charged', 22, 22, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0, 0, 22, 22);
-      // Bola de energía verde
-      ctx.fillStyle = '#00ffaa';
+      ctx.fillStyle = G1;
       ctx.beginPath(); ctx.arc(11, 11, 9, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#00ccff';
+      ctx.fillStyle = C1;
       ctx.beginPath(); ctx.arc(11, 11, 6, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = W1;
       ctx.beginPath(); ctx.arc(9, 8, 3, 0, Math.PI*2); ctx.fill();
@@ -161,117 +160,105 @@ const GF = {
 
     this._t('enemy_bullet', 10, 6, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0, 0, 10, 6);
-      ctx.fillStyle = A2;
+      ctx.fillStyle = R1;
       ctx.fillRect(1, 2, 7, 2);
-      ctx.fillStyle = '#ff8866';
+      ctx.fillStyle = R2;
       ctx.fillRect(2, 1, 5, 4);
     });
 
     this._t('boss_bullet', 16, 16, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0, 0, 16, 16);
-      ctx.fillStyle = '#ff6600';
+      ctx.fillStyle = V2;
       ctx.beginPath(); ctx.arc(8, 8, 6, 0, Math.PI*2); ctx.fill();
-      ctx.fillStyle = '#ffcc00';
+      ctx.fillStyle = Y1;
       ctx.beginPath(); ctx.arc(8, 8, 3, 0, Math.PI*2); ctx.fill();
       ctx.fillStyle = W1;
       ctx.fillRect(7, 7, 2, 2);
     });
 
-    // Bala enemigo key-holder (naranja especial)
     this._t('key_bullet', 10, 6, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0, 0, 10, 6);
-      ctx.fillStyle = '#ffaa00';
+      ctx.fillStyle = Y1;
       ctx.fillRect(1, 2, 7, 2);
-      ctx.fillStyle = '#ffee44';
+      ctx.fillStyle = W1;
       ctx.fillRect(2, 1, 5, 4);
     });
   },
 
   // ─── ENEMIGOS (terrestre y volador mejorados) ─────────────
   _enemies() {
-    // Enemigo terrestre — oso mecánico (sin cambios de comportamiento)
     const drawBear = (ctx, walkFrame) => {
-      ctx.fillStyle = B1; ctx.fillRect(0,0,32,32);
-      // Cabeza
-      ctx.fillStyle = '#cc2200';
+      ctx.fillStyle = B1;
+      ctx.fillRect(0, 0, 32, 32);
+      ctx.fillStyle = V1;
       ctx.fillRect(8, 2, 16, 14);
-      // Orejas
-      ctx.fillStyle = '#aa1100';
+      ctx.fillStyle = V2;
       ctx.fillRect(6, 2, 4, 4);
       ctx.fillRect(22, 2, 4, 4);
-      // Interior orejas
-      ctx.fillStyle = '#ff4444';
+      ctx.fillStyle = C2;
       ctx.fillRect(7, 3, 2, 2);
       ctx.fillRect(23, 3, 2, 2);
-      // Ojos mecánicos
-      ctx.fillStyle = '#ffee00';
+      ctx.fillStyle = Y1;
       ctx.fillRect(10, 6, 4, 4);
       ctx.fillRect(18, 6, 4, 4);
-      ctx.fillStyle = '#ff8800';
+      ctx.fillStyle = W1;
       ctx.fillRect(11, 7, 2, 2);
       ctx.fillRect(19, 7, 2, 2);
-      // Hocico
-      ctx.fillStyle = '#881100';
+      ctx.fillStyle = S2;
       ctx.fillRect(12, 12, 8, 4);
-      ctx.fillStyle = '#ff6666';
+      ctx.fillStyle = R2;
       ctx.fillRect(13, 13, 2, 2);
       ctx.fillRect(17, 13, 2, 2);
-      // Cuerpo
-      ctx.fillStyle = '#aa1100';
+      ctx.fillStyle = V1;
       ctx.fillRect(6, 16, 20, 10);
-      ctx.fillStyle = '#ff3333';
+      ctx.fillStyle = C1;
       ctx.fillRect(12, 17, 8, 4);
-      ctx.fillStyle = '#660000';
+      ctx.fillStyle = S2;
       ctx.fillRect(7, 17, 4, 8);
       ctx.fillRect(21, 17, 4, 8);
-      // Piernas
       if (!walkFrame) {
-        ctx.fillStyle = '#881100';
+        ctx.fillStyle = V2;
         ctx.fillRect(8, 26, 6, 6);
         ctx.fillRect(18, 26, 6, 6);
-        ctx.fillStyle = '#440000';
+        ctx.fillStyle = S2;
         ctx.fillRect(8, 30, 6, 2);
         ctx.fillRect(18, 30, 6, 2);
       } else {
-        ctx.fillStyle = '#881100';
+        ctx.fillStyle = V2;
         ctx.fillRect(7, 26, 6, 6);
         ctx.fillRect(19, 26, 6, 6);
-        ctx.fillStyle = '#440000';
+        ctx.fillStyle = S2;
         ctx.fillRect(7, 30, 6, 2);
         ctx.fillRect(19, 30, 6, 2);
       }
     };
+
     this._t('enemy_ground', 32, 32, ctx => drawBear(ctx, false));
     this._t('enemy_ground2', 32, 32, ctx => drawBear(ctx, true));
 
-    // Enemigo volador — abeja mecánica
     this._t('enemy_fly', 34, 30, ctx => {
-      ctx.fillStyle = B1; ctx.fillRect(0,0,34,30);
-      // Alas
-      ctx.fillStyle = 'rgba(100,200,255,0.6)';
+      ctx.fillStyle = B1;
+      ctx.fillRect(0, 0, 34, 30);
+      ctx.fillStyle = 'rgba(16,228,255,0.5)';
       ctx.fillRect(2, 6, 10, 6);
       ctx.fillRect(22, 6, 10, 6);
-      ctx.fillStyle = 'rgba(100,200,255,0.3)';
+      ctx.fillStyle = 'rgba(16,228,255,0.28)';
       ctx.fillRect(2, 10, 12, 4);
       ctx.fillRect(20, 10, 12, 4);
-      // Cuerpo (rayas)
-      const stripeColors = ['#ff8800','#111111','#ff8800','#111111','#ff8800'];
+      const stripeColors = [V2, S1, V2, S1, V2];
       stripeColors.forEach((col, i) => {
         ctx.fillStyle = col;
         ctx.fillRect(10, 8 + i * 3, 14, 3);
       });
-      // Cabeza
-      ctx.fillStyle = '#333333';
+      ctx.fillStyle = S2;
       ctx.fillRect(12, 4, 10, 8);
-      // Ojos
-      ctx.fillStyle = '#ff0000';
+      ctx.fillStyle = R1;
       ctx.fillRect(13, 6, 3, 3);
       ctx.fillRect(18, 6, 3, 3);
-      ctx.fillStyle = '#ff6600';
+      ctx.fillStyle = R2;
       ctx.fillRect(14, 7, 1, 1);
       ctx.fillRect(19, 7, 1, 1);
-      // Aguijón
-      ctx.fillStyle = '#ffcc00';
+      ctx.fillStyle = Y1;
       ctx.fillRect(15, 23, 4, 3);
       ctx.fillRect(16, 26, 2, 2);
     });
@@ -280,12 +267,11 @@ const GF = {
   // ─── BOSS — Araña mecánica gigante ───────────────────────
   _boss() {
     this._t('boss', 96, 96, ctx => {
-      ctx.fillStyle = B1; ctx.fillRect(0, 0, 96, 96);
+      ctx.fillStyle = B1;
+      ctx.fillRect(0, 0, 96, 96);
 
-      // Patas (4 pares)
-      const legColor = '#441155';
-      const legHighlight = '#8833aa';
-      // Patas izquierdas
+      const legColor = '#230b40';
+      const legHighlight = '#8a5dff';
       ctx.fillStyle = legColor;
       ctx.fillRect(4, 30, 20, 5);  ctx.fillRect(4, 30, 5, 14);
       ctx.fillRect(2, 42, 20, 5);  ctx.fillRect(2, 42, 5, 14);
@@ -295,7 +281,6 @@ const GF = {
       ctx.fillRect(4, 30, 20, 2);
       ctx.fillRect(2, 42, 20, 2);
       ctx.fillRect(4, 54, 18, 2);
-      // Patas derechas
       ctx.fillStyle = legColor;
       ctx.fillRect(72, 30, 20, 5); ctx.fillRect(87, 30, 5, 14);
       ctx.fillRect(74, 42, 20, 5); ctx.fillRect(89, 42, 5, 14);
@@ -306,62 +291,52 @@ const GF = {
       ctx.fillRect(74, 42, 20, 2);
       ctx.fillRect(74, 54, 18, 2);
 
-      // Abdomen (cola trasera)
-      ctx.fillStyle = '#330044';
+      ctx.fillStyle = '#110723';
       ctx.fillRect(28, 52, 40, 36);
-      ctx.fillStyle = '#6600aa';
+      ctx.fillStyle = '#3d1476';
       ctx.fillRect(30, 54, 36, 4);
       ctx.fillRect(30, 62, 36, 4);
       ctx.fillRect(30, 70, 36, 4);
-      ctx.fillStyle = '#9933cc';
+      ctx.fillStyle = '#7d34ff';
       ctx.fillRect(32, 78, 32, 8);
 
-      // Cuerpo principal
-      ctx.fillStyle = '#220033';
+      ctx.fillStyle = '#10031d';
       ctx.fillRect(18, 24, 60, 36);
-
-      // Detalle caparazón
-      ctx.fillStyle = '#440066';
+      ctx.fillStyle = '#2a0c50';
       ctx.fillRect(22, 28, 52, 6);
       ctx.fillRect(22, 38, 52, 6);
       ctx.fillRect(22, 48, 52, 6);
-
-      // Brillo caparazón
-      ctx.fillStyle = '#aa55ff';
+      ctx.fillStyle = '#b466ff';
       ctx.fillRect(20, 25, 4, 2);
       ctx.fillRect(22, 26, 2, 2);
 
-      // Cabeza
-      ctx.fillStyle = '#330055';
+      ctx.fillStyle = '#14052a';
       ctx.fillRect(22, 6, 52, 22);
-      ctx.fillStyle = '#550088';
+      ctx.fillStyle = '#4f13a8';
       ctx.fillRect(24, 8, 48, 6);
 
-      // Ojos múltiples (8 ojos de araña)
       const eyePositions = [
         [26,10],[34,8],[44,8],[54,8],[62,10],
         [30,16],[44,16],[58,16]
       ];
       eyePositions.forEach(([ex, ey], i) => {
-        ctx.fillStyle = i < 2 || i > 4 ? '#ff0000' : '#ff6600';
+        ctx.fillStyle = i < 2 || i > 4 ? R1 : Y1;
         ctx.fillRect(ex, ey, 6, 6);
-        ctx.fillStyle = '#ffffff';
-        ctx.fillRect(ex+1, ey+1, 2, 2);
+        ctx.fillStyle = W1;
+        ctx.fillRect(ex + 1, ey + 1, 2, 2);
       });
 
-      // Colmillos
-      ctx.fillStyle = '#ffffff';
+      ctx.fillStyle = W1;
       ctx.fillRect(32, 26, 5, 6);
       ctx.fillRect(59, 26, 5, 6);
-      ctx.fillStyle = '#00ffaa';
-      ctx.fillRect(33, 30, 3, 3); // veneno
+      ctx.fillStyle = G1;
+      ctx.fillRect(33, 30, 3, 3);
       ctx.fillRect(60, 30, 3, 3);
 
-      // Cañones en el cuerpo
-      ctx.fillStyle = '#114422';
+      ctx.fillStyle = '#0d2e21';
       ctx.fillRect(20, 36, 10, 7);
       ctx.fillRect(66, 36, 10, 7);
-      ctx.fillStyle = '#00ff88';
+      ctx.fillStyle = G1;
       ctx.fillRect(18, 38, 4, 3);
       ctx.fillRect(74, 38, 4, 3);
     });
@@ -694,13 +669,13 @@ const GF = {
     this._t('icon_heart', 12, 12, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0,0,12,12);
       const h = ['011011','111111','111111','011110','001100','000000'];
-      this._bitmap(ctx, h, 0, 2, 2, '#ff3355');
+      this._bitmap(ctx, h, 0, 2, 2, R1);
     });
 
     this._t('icon_energy', 10, 12, ctx => {
       ctx.fillStyle = B1; ctx.fillRect(0,0,10,12);
       const b = ['01110','01110','11111','11111','01110','01110'];
-      this._bitmap(ctx, b, 0, 0, 2, A1);
+      this._bitmap(ctx, b, 0, 0, 2, C1);
     });
   },
 

@@ -40,11 +40,8 @@ export default class PauseScene extends Phaser.Scene {
 
     const resume = () => {
       const s1 = this.scene.get('Stage1Scene');
-      const s2 = this.scene.get('Stage2Scene'); // <-- AÑADIR
       const bs = this.scene.get('BossScene');
-      
       if (s1?.sys.isActive()) s1._togglePause();
-      else if (s2?.sys.isActive()) s2._togglePause(); // <-- AÑADIR
       else if (bs?.sys.isActive()) bs._togglePause();
     };
 
@@ -54,8 +51,7 @@ export default class PauseScene extends Phaser.Scene {
     });
     menuBtn.on('pointerdown', () => {
       AudioManager.stopBGM();
-      // <-- Añadir 'Stage2Scene' al array
-      ['HUDScene','Stage1Scene','Stage2Scene','BossScene','PauseScene'].forEach(k => {
+      ['HUDScene','Stage1Scene','BossScene','PauseScene'].forEach(k => {
         const s = this.scene.get(k);
         if (s?.sys.isActive()) this.scene.stop(k);
       });

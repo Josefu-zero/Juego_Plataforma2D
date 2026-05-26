@@ -11,6 +11,7 @@
  */
 
 import Phaser from 'phaser';
+import './style.css';
 
 // Exponer Phaser globalmente (las clases hijas lo usan sin re-importar)
 window.Phaser = Phaser;

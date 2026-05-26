@@ -38,23 +38,8 @@ export default class PreloadScene extends Phaser.Scene {
 
     this.load.on('progress', v => { this.barFill.width = bw * v; });
 
-    // Intentar cargar assets — si no existen se generan proceduralmente
-    const A = 'assets';
-    const imgs = [
-      'player_idle','player_run','player_jump','player_dash','player_hurt',
-      'enemy_ground','enemy_ground2','enemy_fly','boss',
-      'tile','tile_wall','tile_spike','platform','platform_sm','platform_boss',
-      'bullet','bullet_charged','enemy_bullet','boss_bullet',
-      'powerup_life','powerup_energy',
-      'checkpoint','checkpoint_active',
-      'key_item','door_closed','door_open','hud_key',
-      'dash_trail'
-    ];
-    imgs.forEach(k => this.load.image(k, `${A}/${k}.png`));
-
-    for (let i = 0; i < 5; i++) {
-      this.load.image(`exp${i}`, `${A}/exp${i}.png`);
-    }
+    // Todos los gráficos se generan proceduralmente en GraphicsFactory.
+    // No cargamos PNGs redundantes aquí para evitar assets muertos.
   }
 
   create() {
