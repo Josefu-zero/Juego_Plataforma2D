@@ -271,6 +271,64 @@ export class EnemyFlying extends BaseEnemy {
   }
 }
 
+// ─── Enemigo Flying KeyHolder (Volador que suelta llave) ──────────
+export class EnemyFlyingKeyHolder extends EnemyFlying {
+  constructor(scene, x, y) {
+    super(scene, x, y);
+    this.health     = 4;
+    this.maxHealth  = 4;
+    this.scoreValue = 500;
+    this.speed      = 115; // Un poco más rápido
+    this.setScale(1.25);
+    this.setTint(0xffcc00); // Tinte dorado para que el jugador sepa que tiene la llave
+  }
+
+  takeDamage(amount = 1) {
+    if (!this.isAlive || this.isHurt) return;
+    this.health -= amount;
+    this.isHurt  = true;
+    this.setTint(0xffffff);
+    this.gameScene.cameras.main.shake(35, 0.004);
+    this.gameScene.time.delayedCall(120, () => {
+      if (!this.active) return;
+      this.setTint(0xffcc00); // Restaura su color dorado
+      this.isHurt = false;
+    });
+    if (this.health <= 0) this._die();
+  }
+
+  _die() {
+    if (!this.isAlive) return;
+    this.isAlive = false;
+
+    // ★ Siempre suelta la llave antes de desaparecer
+    this.gameScene.events.emit('dropKey', this.x, this.y - 10);
+
+    // Como super._die() suelta powerups, llamamos directo a la lógica de muerte
+    const s = this.gameScene.registry.get('score');
+    this.gameScene.registry.set('score', s + this.scoreValue);
+
+    const frames = ['exp0','exp1','exp2','exp3','exp4'];
+    let fi = 0;
+    this.gameScene.time.addEvent({
+      delay: 55, repeat: 4,
+      callback: () => {
+        if (!this.gameScene) return;
+        this.gameScene.add.image(
+          this.x + Phaser.Math.Between(-12, 12),
+          this.y + Phaser.Math.Between(-12, 12),
+          frames[fi++]
+        ).setDepth(10).setScale(1.3);
+      }
+    });
+
+    this.setActive(false).setVisible(false);
+    if (this.body) this.body.enable = false;
+  }
+}
+
+
+
 // ─── Boss — Araña Mecánica Gigante ────────────────────────────
 export class Boss extends BaseEnemy {
   constructor(scene, x, y) {

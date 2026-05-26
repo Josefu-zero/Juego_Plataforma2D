@@ -7,7 +7,7 @@
  */
 
 import Player         from '../objects/Player.js';
-import { EnemyGround, EnemyFlying, EnemyKeyHolder } from '../objects/Enemy.js';
+import { EnemyGround, EnemyFlying, EnemyKeyHolder, EnemyFlyingKeyHolder } from '../objects/Enemy.js';
 import CollisionHelper from '../physics/CollisionHelper.js';
 import StorageManager  from '../managers/StorageManager.js';
 import AudioManager    from '../audio/AudioManager.js';
@@ -246,17 +246,22 @@ export default class Stage1Scene extends Phaser.Scene {
       ['f', 1520, H-240], ['g', 1720, H-100], ['g', 1860, H-100],
       ['f', 1850, H-220], ['g', 2030, H-100], ['f', 2140, H-210],
       ['g', 2300, H-100], ['g', 2420, H-100], ['f', 2380, H-230],
-      // ★ EnemyKeyHolder — guardián de la llave (antes de la puerta)
-      ['k', 2150, H-100],
+      
+      // ELIMINAMOS AL TERRESTRE
+      // ['k', 2150, H-100], 
+      
+      // ★ AÑADIMOS AL NUEVO VOLADOR (La 'Y' es más alta: H-250)
+      ['kf', 2150, H-250],
     ];
     defs.forEach(([t, x, y]) => {
       let e;
       if (t === 'g')      e = new EnemyGround(this, x, y);
       else if (t === 'f') e = new EnemyFlying(this, x, y);
       else if (t === 'k') e = new EnemyKeyHolder(this, x, y);
+      else if (t === 'kf') e = new EnemyFlyingKeyHolder(this, x, y); // <-- NUEVA LÍNEA
       this.enemies.push(e);
     });
-  }
+    }
 
   // ─── Spawn de la llave ───────────────────────────────────
   _spawnKey(x, y) {
@@ -394,7 +399,7 @@ export default class Stage1Scene extends Phaser.Scene {
         this._showMessage('¡La puerta sigue cerrada!', '#ff4444', 1000);
         return;
       }
-      this._goToBoss();
+      this._goToStage2();
     });
   }
 
@@ -472,6 +477,22 @@ export default class Stage1Scene extends Phaser.Scene {
     this.time.delayedCall(700, () => {
       this.scene.stop('HUDScene');
       this.scene.start('BossScene', {
+        lives:  this.registry.get('lives'),
+        score:  this.registry.get('score'),
+        energy: this.registry.get('energy')
+      });
+      this.scene.launch('HUDScene');
+      this.scene.stop('Stage1Scene');
+    });
+  }
+
+    _goToStage2() {
+    this.gameState = 'transitioning';
+    AudioManager.stopBGM();
+    this.cameras.main.fade(600, 0, 0, 0);
+    this.time.delayedCall(700, () => {
+      this.scene.stop('HUDScene');
+      this.scene.start('Stage2Scene', {
         lives:  this.registry.get('lives'),
         score:  this.registry.get('score'),
         energy: this.registry.get('energy')
