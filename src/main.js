@@ -19,6 +19,7 @@ import BootScene     from './scenes/BootScene.js';
 import PreloadScene  from './scenes/PreloadScene.js';
 import MenuScene     from './scenes/MenuScene.js';
 import Stage1Scene   from './scenes/Stage1Scene.js';
+import Stage2Scene   from './scenes/Stage2Scene.js';
 import BossScene     from './scenes/BossScene.js';
 import HUDScene      from './scenes/HUDScene.js';
 import PauseScene    from './scenes/PauseScene.js';
@@ -48,6 +49,7 @@ const config = {
     PreloadScene,
     MenuScene,
     Stage1Scene,
+    Stage2Scene,
     BossScene,
     HUDScene,
     PauseScene,
