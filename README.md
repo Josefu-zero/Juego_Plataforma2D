@@ -1,4 +1,4 @@
-# 🎮 Juego Plataforma 2D (Estilo Megaman)
+# 🎮 Juego Plataforma 2D (Estilo Megaman) - MEGA X
 
 Un dinámico juego de acción y plataformas en 2D desarrollado con **Phaser 3** y empaquetado mediante **Vite**. El proyecto destaca por su enfoque modular, implementando mecánicas robustas de disparo (normal y cargado), habilidades de desplazamiento rápido (*dash*), sistemas de reciclaje de proyectiles (*object pooling*), e Inteligencia Artificial variada para enemigos terrestres, voladores y jefes mecánicos gigantes.
 
