@@ -13,7 +13,7 @@ A continuación se muestran los marcadores de posición para las capturas de pan
 ### 🖥️ Menús e Interfaces
 | 🎮 Menú Principal | ⏸️ Menú de Pausa | 💀 Pantalla de Game Over |
 | :---: | :---: | :---: |
-| ![Menú Principal](https://placehold.co/380x220/0a0a20/ffffff?text=Menu+Principal+MEGA+X) <br> *Inicio, Hi-Score y controles* | ![Menú de Pausa](https://placehold.co/380x220/0f0f15/ffffff?text=Juego+Pausado) <br> *Interrupción y ajuste de volumen* | ![Game Over](https://placehold.co/380x220/1a0000/ffffff?text=Game+Over) <br> *Reintentos y guardado de récords* |
+| ![Menú Principal](public/assets/screenshots/menu.png) <br> *Inicio, Hi-Score y controles* | ![Menú de Pausa](https://placehold.co/380x220/0f0f15/ffffff?text=Juego+Pausado) <br> *Interrupción y ajuste de volumen* | ![Game Over](https://placehold.co/380x220/1a0000/ffffff?text=Game+Over) <br> *Reintentos y guardado de récords* |
 
 ### 🕹️ Niveles y Escenarios de Juego
 | 🏙️ Stage 1: La Ciudad | 🌌 Stage 2: El Abismo | 🕷️ Arena del Jefe Final |
