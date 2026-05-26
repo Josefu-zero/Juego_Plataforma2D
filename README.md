@@ -11,12 +11,12 @@ A continuación se muestran los marcadores de posición para las capturas de pan
 ### 🖥️ Menús e Interfaces
 | 🎮 Menú Principal | ⏸️ Menú de Pausa | 💀 Pantalla de Game Over |
 | :---: | :---: | :---: |
-| ![Menú Principal](public/assets/screenshots/menu.png) <br> *Inicio, Hi-Score y controles* | ![Menú de Pausa](https://placehold.co/380x220/0f0f15/ffffff?text=Juego+Pausado) <br> *Interrupción y ajuste de volumen* | ![Game Over](https://placehold.co/380x220/1a0000/ffffff?text=Game+Over) <br> *Reintentos y guardado de récords* |
+| ![Menú Principal](public/assets/screenshots/menu.png) <br> *Inicio, Hi-Score y controles* | ![Menú de Pausa](public/assets/screenshots/pausa.png) <br> *Interrupción y ajuste de volumen* | ![Game Over](public/assets/screenshots/gameover.png) <br> *Reintentos y guardado de récords* |
 
 ### 🕹️ Niveles y Escenarios de Juego
 | 🏙️ Stage 1: La Ciudad | 🌌 Stage 2: El Abismo | 🕷️ Arena del Jefe Final |
 | :---: | :---: | :---: |
-| ![Stage 1 City](https://placehold.co/380x220/050a20/ffffff?text=Stage+1+City+Gameplay) <br> *Mecánica de llaves y plataformas estables* | ![Stage 2 The Abyss](https://placehold.co/380x220/00020a/ffffff?text=Stage+2+The+Abyss) <br> *Generación dinámica de enemigos y vacío* | ![Boss Arena](https://placehold.co/380x220/1a0505/ffffff?text=Boss+Arena+Spider) <br> *Combate final contra la araña mecánica* |
+| ![Stage 1 City](public/assets/screenshots/stage1.png) <br> *Mecánica de llaves y plataformas estables* | ![Stage 2 The Abyss](public/assets/screenshots/abismo.png) <br> *Generación dinámica de enemigos y vacío* | ![Boss Arena](public/assets/screenshots/boss.png) <br> *Combate final contra la araña mecánica* |
 
 ---
 
