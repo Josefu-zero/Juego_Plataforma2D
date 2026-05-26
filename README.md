@@ -4,6 +4,26 @@ Un dinámico juego de acción y plataformas en 2D desarrollado con **Phaser 3** 
 
 ---
 
+### ⚡ Personaje Principal (Estados y Animaciones)
+| Reposo (Idle) | Corriendo (Run) | Salto (Jump) | Impulso (Dash) | Daño (Hurt) |
+| :---: | :---: | :---: | :---: | :---: |
+| <img src="public/assets/player_idle.png" width="50"> | <img src="public/assets/player_run.png" width="50"> | <img src="public/assets/player_jump.png" width="50"> | <img src="public/assets/player_dash.png" width="50"> | <img src="public/assets/player_hurt.png" width="50"> |
+| `player_idle.png` | `player_run.png` | `player_jump.png` | `player_dash.png` | `player_hurt.png` |
+
+### 👾 Enemigos e IA
+| Terrestre Tipo 1 | Terrestre Tipo 2 | Volador | Jefe Mecánico Gigante |
+| :---: | :---: | :---: | :---: |
+| <img src="public/assets/enemy_ground.png" width="50"> | <img src="public/assets/enemy_ground2.png" width="50"> | <img src="public/assets/enemy_fly.png" width="50"> | <img src="public/assets/boss.png" width="90"> |
+| `enemy_ground.png` | `enemy_ground2.png` | `enemy_fly.png` | `boss.png` |
+
+### 🔋 Ítems y Mecánicas
+| Cápsula de Vida | Cápsula de Energía | Checkpoint Inactivo | Checkpoint Activo |
+| :---: | :---: | :---: | :---: |
+| <img src="public/assets/powerup_life.png" width="35"> | <img src="public/assets/powerup_energy.png" width="35"> | <img src="public/assets/checkpoint.png" width="40"> | <img src="public/assets/checkpoint_active.png" width="40"> |
+| `powerup_life.png` | `powerup_energy.png` | `checkpoint.png` | `checkpoint_active.png` |
+
+---
+
 ## 🚀 Guía de Ejecución
 
 Para ejecutar el proyecto en tu entorno local, asegúrate de tener instalado [Node.js](https://nodejs.org/) (versión 16 o superior recomendada).
@@ -105,5 +125,9 @@ juego_plataforma2d/
 ## 👥 Créditos
 
 Desarrollado con pasión por: 
+
+David Puga
+Joseph Jimenez
+Francis Bravo
 
 *Agradecimientos especiales a la comunidad de desarrollo independiente por los assets base e inspiración tomados de las mecánicas clásicas de la era de los 16 bits.*
