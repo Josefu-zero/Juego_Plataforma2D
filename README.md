@@ -59,7 +59,7 @@ El juego mapea automáticamente eventos `touchstart` y `touchend` en los siguien
 
 El código fuente está diseñado bajo un enfoque modular y orientado a objetos, separando las entidades físicas, los managers globales y el ciclo de vida de las escenas de Phaser:
 
-text
+` ` `
 juego_plataforma2d/
 ├── public/
 │   └── assets/               # Spritesheets, fondos, tiles de plataformas y FX de explosión
@@ -90,7 +90,7 @@ juego_plataforma2d/
 │   └── main.js               # Archivo de entrada de Vite y configuración del objeto Phaser.Game
 ├── index.html                # Contenedor HTML principal del lienzo de juego y los controles móviles
 └── vite.config.js            # Configuración del empaquetador Vite
-
+` ` `
 
 ---
 
