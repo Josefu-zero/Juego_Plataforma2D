@@ -216,7 +216,7 @@ export default class BossScene extends Phaser.Scene {
   _setupInput() {
     this.cursors = this.input.keyboard.createCursorKeys();
     this.keys    = this.input.keyboard.addKeys({
-      A:'A', D:'D', W:'W', Z:'Z', X:'X', C:'C', J:'J',
+      A:'A', D:'D', W:'W', Z:'Z', X:'X', C:'C', J:'J', K:'K',
       SHIFT: Phaser.Input.Keyboard.KeyCodes.SHIFT
     });
     this.input.keyboard.on('keydown-P',   () => this._togglePause());

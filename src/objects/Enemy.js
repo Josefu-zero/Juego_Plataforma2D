@@ -21,6 +21,8 @@ class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     this.isAlive    = true;
     this.isHurt     = false;
     this.gameScene  = scene;
+    this.deathFX    = [];
+    this.onDeath    = null;
 
     this.setDepth(4);
   }
@@ -43,6 +45,25 @@ class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     if (this.health <= 0) this._die();
   }
 
+  _spawnDeathExplosion(offsetX = 10, offsetY = 10, scale = 1.1) {
+    if (!this.gameScene) return;
+
+    const frames = ['exp0', 'exp1', 'exp2', 'exp3', 'exp4'];
+    this.deathFX = frames.map((frame) => {
+      const fx = this.gameScene.add.image(
+        this.x + Phaser.Math.Between(-offsetX, offsetX),
+        this.y + Phaser.Math.Between(-offsetY, offsetY),
+        frame
+      ).setDepth(10).setScale(scale);
+
+      this.gameScene.time.delayedCall(350, () => {
+        if (fx?.active) fx.destroy();
+      });
+
+      return fx;
+    });
+  }
+
   _die() {
     if (!this.isAlive) return;
     this.isAlive = false;
@@ -51,24 +72,14 @@ class BaseEnemy extends Phaser.Physics.Arcade.Sprite {
     const s = this.gameScene.registry.get('score');
     this.gameScene.registry.set('score', s + this.scoreValue);
 
-    const frames = ['exp0','exp1','exp2','exp3','exp4'];
-    let fi = 0;
-    this.gameScene.time.addEvent({
-      delay: 55, repeat: 4,
-      callback: () => {
-        if (!this.gameScene) return;
-        this.gameScene.add.image(
-          this.x + Phaser.Math.Between(-10,10),
-          this.y + Phaser.Math.Between(-10,10),
-          frames[fi++]
-        ).setDepth(10).setScale(1.1);
-      }
-    });
+    this._spawnDeathExplosion();
 
     // Drop de power-up (25%)
     if (Math.random() < 0.25) {
       this.gameScene.events.emit('spawnPowerup', this.x, this.y);
     }
+
+    if (this.onDeath) this.onDeath();
 
     this.setActive(false).setVisible(false);
     if (this.body) this.body.enable = false;
@@ -186,19 +197,7 @@ export class EnemyKeyHolder extends EnemyGround {
     const s = this.gameScene.registry.get('score');
     this.gameScene.registry.set('score', s + this.scoreValue);
 
-    const frames = ['exp0','exp1','exp2','exp3','exp4'];
-    let fi = 0;
-    this.gameScene.time.addEvent({
-      delay: 55, repeat: 4,
-      callback: () => {
-        if (!this.gameScene) return;
-        this.gameScene.add.image(
-          this.x + Phaser.Math.Between(-12, 12),
-          this.y + Phaser.Math.Between(-12, 12),
-          frames[fi++]
-        ).setDepth(10).setScale(1.3);
-      }
-    });
+    this._spawnDeathExplosion(12, 12, 1.3);
 
     // ★ Siempre suelta la llave
     this.gameScene.events.emit('dropKey', this.x, this.y - 10);
@@ -210,8 +209,8 @@ export class EnemyKeyHolder extends EnemyGround {
 
 // ─── Enemigo Volador ─────────────────────────────────────────
 export class EnemyFlying extends BaseEnemy {
-  constructor(scene, x, y) {
-    super(scene, x, y, 'enemy_fly', 2, 300);
+  constructor(scene, x, y, texture = 'enemy_fly') {
+    super(scene, x, y, texture, 2, 300);
 
     this.body.setSize(28, 22);
     this.body.setOffset(3, 4);
@@ -308,22 +307,27 @@ export class EnemyFlyingKeyHolder extends EnemyFlying {
     const s = this.gameScene.registry.get('score');
     this.gameScene.registry.set('score', s + this.scoreValue);
 
-    const frames = ['exp0','exp1','exp2','exp3','exp4'];
-    let fi = 0;
-    this.gameScene.time.addEvent({
-      delay: 55, repeat: 4,
-      callback: () => {
-        if (!this.gameScene) return;
-        this.gameScene.add.image(
-          this.x + Phaser.Math.Between(-12, 12),
-          this.y + Phaser.Math.Between(-12, 12),
-          frames[fi++]
-        ).setDepth(10).setScale(1.3);
-      }
-    });
+    this._spawnDeathExplosion(12, 12, 1.3);
 
     this.setActive(false).setVisible(false);
     if (this.body) this.body.enable = false;
+  }
+}
+
+// ─── Mini Boss del Stage 2 ───────────────────────────────────
+export class EnemyMiniBoss extends EnemyFlying {
+  constructor(scene, x, y) {
+    super(scene, x, y, 'enemy_fly2');
+
+    this.health     = 8;
+    this.maxHealth  = 8;
+    this.scoreValue = 1200;
+    this.speed      = 110;
+    this.setScale(1.35);
+    this.body.setSize(40, 28);
+    this.body.setOffset(2, 2);
+    this.setTint(0xffcc00);
+    this.onDeath = () => this.gameScene.events.emit('miniBossDefeated');
   }
 }
 

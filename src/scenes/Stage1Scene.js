@@ -327,6 +327,10 @@ export default class Stage1Scene extends Phaser.Scene {
 
     // Desactivar colisión de la puerta
     this.door.body.enable = false;
+    if (this._doorCollider) {
+      this.physics.world.removeCollider(this._doorCollider);
+      this._doorCollider = null;
+    }
 
     AudioManager.playSFXCheckpoint();
     this._showMessage('¡PUERTA ABIERTA!', '#00ff88', 1800);
@@ -385,7 +389,7 @@ export default class Stage1Scene extends Phaser.Scene {
     CollisionHelper.playerVsSpikes(this, P, this.spikes, () => P.takeDamage(2));
 
     // Puerta — colisión física (bloquea) + overlap para abrir
-    this.physics.add.collider(P, this.door);
+    this._doorCollider = this.physics.add.collider(P, this.door);
     this.physics.add.overlap(P, this.door, () => {
       if (!this.door.isOpen && !this.doorOpen) {
         this._tryOpenDoor();
@@ -412,6 +416,11 @@ export default class Stage1Scene extends Phaser.Scene {
     });
     this.input.keyboard.on('keydown-P',   () => this._togglePause());
     this.input.keyboard.on('keydown-ESC', () => this._togglePause());
+    this.input.keyboard.on('keydown-B', (event) => {
+      if (!event.ctrlKey || this.gameState !== 'playing') return;
+      event.preventDefault();
+      this._goToBoss();
+    });
   }
 
   _setupMobileControls() {
